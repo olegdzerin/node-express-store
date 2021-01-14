@@ -111,6 +111,10 @@ module.exports.login_post = async (req, res) => {
             res.cookie('jwt', token, {
                 httpOnly: true,
                 maxAge: maxAge * 1000
+            });
+            res.cookie('exp1', "TOKEN", {
+                httpOnly: true,
+                maxAge: maxAge * 1000
             })
 
 
