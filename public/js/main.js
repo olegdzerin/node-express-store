@@ -4,7 +4,17 @@ import {
 import {
   Init
 } from './initTemplate.js';
-// import { json } from '/sequelize/types';
+
+var displayCatalog = (e) => {
+  
+ if(e.target.getAttribute("id") === "add-men"){
+  localStorage.setItem('gender', 'men');
+  initDb('/products/men')
+ }else{
+  localStorage.setItem('gender', 'women');
+  initDb('/products/women')
+ }
+}
 var initDb = async (url) => {
   var countCar;
   var products;
@@ -19,44 +29,34 @@ var initDb = async (url) => {
   }
 
   var initAdd = () => {
+  
     countCar = products.length;
     var init = new Init(products, countCar);
-    domElements.result.innerHTML = init.resultTemplate();
+    domElements.show_catalog.innerHTML = init.resultTemplate();
+    console.log(document.querySelectorAll(".select-product")[3]);
   }
   initAdd();
-}
-var initMenAdd = (e) => {
-  console.log('ok1');
-  localStorage.setItem('gender', 'men');
-  initDb('/products/men')
-}
-var initWomenAdd = (e) => {
-  console.log('ok1');
-  localStorage.setItem('gender', 'women');
-  initDb('/products/women')
-}
-var initAfterSelection = (e) => {
-  if ((e.target.value === '1') && (localStorage.getItem('gender') === 'women')) {
-    return initDb('/products/women/jacket');
+};
+var initAfterSortingSubFn = (e, targetValue, localStorageValue, url) => {
+  if ((e.target.value === targetValue) && (localStorage.getItem('gender') === localStorageValue)) {
+    return initDb(url);
   };
-  if ((e.target.value === '1') && (localStorage.getItem('gender') === 'men')) {
-    return initDb('/products/men/jacket');
-  };
-  if ((e.target.value === '2') && (localStorage.getItem('gender') === 'women')) {
-    return initDb('/products/women/trousers');
-  };
-  if ((e.target.value === '2') && (localStorage.getItem('gender') === 'men')) {
-    return initDb('/products/men/trousers');
-  };
+};
+
+var initAfterSorting = (e) => {
+  initAfterSortingSubFn(e, '1',  'women', '/products/women/jacket');
+  initAfterSortingSubFn(e, '1',  'men', '/products/men/jacket');
+  initAfterSortingSubFn(e, '2',  'women', '/products/women/trousers');
+  initAfterSortingSubFn(e, '2',  'men', '/products/men/trousers');
 }
 var selectProduct = (e) => {
-  console.log('result');
+
   if (e.target.innerHTML === "Вибрати") {
     const itemIdEl = $(e.target).prev();
     const itemId = Number(itemIdEl[0].innerHTML)
-    console.log(typeof (itemId));
+   // console.log(typeof (itemId));
     localStorage.setItem('product_id', itemId);
-    console.log('productId' + localStorage.getItem('product_id'));
+  //  console.log('productId' + localStorage.getItem('product_id'));
     (async () => {
       try {
         const result = await fetch(`/products/${itemId}`);
@@ -65,7 +65,7 @@ var selectProduct = (e) => {
         const count = data.length
         var init = new Init(data, count);
         //  console.log(init.data)
-        domElements.result.innerHTML = init.resultTemplate();
+        domElements.show_catalog.innerHTML = init.resultTemplate();
         domElements.addToCart.innerHTML = "Добавити в кошик";
       } catch (err) {
         console.log(err);
@@ -76,17 +76,12 @@ var selectProduct = (e) => {
 
 var addToCart = async () => {
    const user_id = Number(localStorage.getItem('user_id'));
-  // const product_id = Number(localStorage.getItem('product_id'))
- // const user_id = localStorage.getItem('user_id');
    const product_id = Number(localStorage.getItem('product_id'))
-   console.log(user_id, product_id);
-   console.log(typeof(user_id), typeof(product_id));
-
   try {
     const res = await fetch(`/cart/${user_id}`);
     const cart = await res.json()
     localStorage.setItem('cart_id', cart.id);
-       console.log('cart::' + cart.id);
+      //  console.log('cart::' + cart.id);
     try {
       const res = await fetch('/cart-products', {
         method: "POST",
@@ -99,7 +94,7 @@ var addToCart = async () => {
         }
       })
       const result = await res.json();
-      console.log(result);
+     //  console.log(result);
     } catch (err) {
       console.log(err);
     }
@@ -108,8 +103,9 @@ var addToCart = async () => {
   }
 }
 
-domElements.addMenImage.addEventListener("click", initMenAdd);
-domElements.addWomenImage.addEventListener("click", initWomenAdd);
-domElements.selectSortingElement.addEventListener('click', initAfterSelection);
-domElements.result.addEventListener('click', selectProduct);
+domElements.addMenImage.addEventListener("click", displayCatalog);
+domElements.addWomenImage.addEventListener("click", displayCatalog);
+domElements.sorting_product.addEventListener('click', initAfterSorting);
+domElements.show_catalog.addEventListener('click', selectProduct);
+
 domElements.addToCart.addEventListener('click', addToCart);
