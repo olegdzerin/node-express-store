@@ -16,6 +16,10 @@ const init = ( res, select) => {
      })();
 }
 
+router.get('/', function(req,res){
+  res.json({a:4});
+})
+
 router.get('/women', function (req, res) {
  init(res, {gender: 'жіноча'});
 });

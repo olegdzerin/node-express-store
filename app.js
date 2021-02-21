@@ -35,7 +35,7 @@ sequelize.authenticate()
 
 app.get('/', (req, res) => res.redirect('/home'))
  app.use('/home', homeRouters)
-app.use('/products', requireAuth, productsRouters);
+app.use('/products', productsRouters);
 
 app.use('/cart-products', requireAuth, cart_productsRouters);
 app.use('/cart', requireAuth, cartRouters)
