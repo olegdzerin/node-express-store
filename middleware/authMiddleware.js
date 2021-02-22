@@ -1,54 +1,57 @@
 const jwt = require('jsonwebtoken');
- const {userModel} = require("../models/User");
+const {
+    userModel
+} = require("../models/User");
 
 const requireAuth = (req, res, next) => {
-const token = req.cookies.jwt;
+    const token = req.cookies.jwt;
 
-// check jwt exist & is verified
-if (token) {
-  jwt.verify(token, 'nodelogin secret', (err,decodedToken) => {
-    if (err) {
-        console.log(err.message);
-        res.redirect('/login');
-    }else{
-        console.log(decodedToken);
-        next();
+    // check jwt exist & is verified
+    if (token) {
+        jwt.verify(token, 'nodelogin secret', (err, decodedToken) => {
+            if (err) {
+                console.log(err.message);
+                res.redirect('/login');
+            } else {
+                console.log(decodedToken);
+                next();
+            }
+        })
+    } else {
+        res.redirect('/home')
     }
-  })
-}
-else{
-    res.redirect('/home')
-}
 }
 
 //check curret user
-const checkUser  =  (req, res, next) => {
+const checkUser = (req, res, next) => {
     const token = req.cookies.jwt;
-    console.log(token);
-   
-    
+    console.log(`token: ${token}`);
+
+
     if (token) {
-         jwt.verify(token, 'nodelogin secret', async (err,decodedToken) => {
+        jwt.verify(token, 'nodelogin secret', async (err, decodedToken) => {
             if (err) {
-               console.log(`err.message:${err.message}`);
+                console.log(`err.message:${err.message}`);
                 next();
-            }else{
+            } else {
                 console.log(`decodedToken::${decodedToken}`);
-               const User =  userModel();
-               const user = await User.findAll({
-                   where: {id: decodedToken.id},
-                   raw: true
-                }
-             );
+                const User = userModel();
+                const user = await User.findAll({
+                    where: {
+                        id: decodedToken.id
+                    },
+                    raw: true
+                });
                 res.locals.user = user[0];
                 next();
             }
-          })
-    }
-    else{
+        })
+    } else {
         res.locals.user = null;
-        next();
+     //   next();
     }
 };
-module.exports = { requireAuth, checkUser};
-
+module.exports = {
+    requireAuth,
+    checkUser
+};
