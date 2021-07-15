@@ -1,0 +1,6 @@
+<ul>
+    <% customers.forEach(function(customer){ %>
+      <%- include('./show', {customer: customer}); %>
+      ok
+    <% }); %>
+</ul>

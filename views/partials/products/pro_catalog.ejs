@@ -1,0 +1,15 @@
+
+  <a href="/orders/customers/<%= user_id%>" " class="btn btn-primary">Перейти в кошик</a>
+    <div class="container">
+      <div class="row">
+    
+          <% products.forEach(function(product){ %>
+      <%- include('./show', {product: product}); %>
+      
+    <% }); %>
+  
+          
+      </div> 
+  </div>
+
+  

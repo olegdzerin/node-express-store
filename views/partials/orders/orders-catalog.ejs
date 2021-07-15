@@ -1,0 +1,10 @@
+<div class="container">
+    <div class="row">
+        <% products.forEach(function(product){ %>
+    <%- include('./show', {product: product}); %>
+    
+  <% }); %>
+
+        
+    </div> 
+</div>

@@ -1,0 +1,24 @@
+
+<div class="col-3">
+<!-- <ul>
+    <li> price: <%= product.price %></li>
+    <li> id: <%= product.id_product %></li>
+    
+</ul> -->
+<div class="card" style="width: 18rem;">
+    <img src="<%= product.photo %>" class="card-img-top" alt="<%= product.photoUrl %>">
+    <div class="card-body">
+      <h5 class="card-title"><%= product.category %> id_product:<%= product.id_product%></h5>
+      <h5 class="card-title"> id_order:<%= product.id_order%></h5>
+      <p class="card-text"><%= product.description %></p>
+      
+      <a href="/products/<%= product.id_product%>"  class="btn btn-primary select">Вибрати</a>
+      <a href="/orders/create/<%= user_id%>/<%= product.id_product%>" class="btn btn-primary select-to-cart">Добавити в кошик</a>
+      <a href="/products"  class="btn btn-primary return-to-catalog">Повернутися до каталогу</a>
+      <a href="/orders/delete/<%= product.id_order%>"  class="btn btn-primary delete">Видалити з кошика</a>
+      
+    </div>
+  </div>
+</div>
+
+

@@ -1,54 +1,58 @@
 const jwt = require('jsonwebtoken');
- const {userModel} = require("../models/User");
-
+const { endsWith } = require('../env');
 const requireAuth = (req, res, next) => {
-const token = req.cookies.jwt;
+    const token = req.cookies.jwt;
 
-// check jwt exist & is verified
-if (token) {
-  jwt.verify(token, 'nodelogin secret', (err,decodedToken) => {
-    if (err) {
-        console.log(err.message);
-        res.redirect('/login');
-    }else{
-        console.log(decodedToken);
-        next();
+    // check jwt exist & is verified
+    if (token) {
+        jwt.verify(token, 'secret', (err, decodedToken) => {
+            if (err) {
+                console.log("errr"+err.message);
+                res.redirect('/login');
+            } else {             
+                next();
+            }
+        })
+    } else {
+        res.redirect('/home')
     }
-  })
-}
-else{
-    res.redirect('/home')
-}
 }
 
 //check curret user
-const checkUser  =  (req, res, next) => {
-    const token = req.cookies.jwt;
-    console.log(token);
-   
-    
+const checkUser = (req, res, next) => {
+   // for test
+    //    const tokenRandom = Math.random();
+    //  tokenRandom <= 1 ? res.cookie('jwt', '111'):console.log('111');
+   const token = req.cookies.jwt;
+    console.log(`checkUser: ${token}`);
+    res.locals.user_name = ''
+
     if (token) {
-         jwt.verify(token, 'nodelogin secret', async (err,decodedToken) => {
+        jwt.verify(token, 'secret', async (err, decodedToken) => {
+            
             if (err) {
-               console.log(`err.message:${err.message}`);
-                next();
-            }else{
-                console.log(`decodedToken::${decodedToken}`);
-               const User =  userModel();
-               const user = await User.findAll({
-                   where: {id: decodedToken.id},
-                   raw: true
+                console.log(`err.message:${err.message}`);
+                res.locals.user = true;
+                res.render('login',{user_exist:''});
+               
+            } else {
+                res.locals.user = false;  
+                if (!req.cookies.user_name) {
+                    res.locals.user_name = '';
+                }else{
+                    res.locals.user_name = req.cookies.user_name;
+                    res.locals.user_id = req.cookies.user_id;
                 }
-             );
-                res.locals.user = user[0];
                 next();
             }
-          })
-    }
-    else{
-        res.locals.user = null;
+        })
+    } else {    
+        res.locals.user = true; 
+        res.locals.user_name = '';
         next();
     }
 };
-module.exports = { requireAuth, checkUser};
-
+module.exports = {
+    requireAuth,
+    checkUser
+};

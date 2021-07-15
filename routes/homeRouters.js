@@ -1,15 +1,13 @@
 const  {Router} = require('express');
 const router = Router();
+const ejs = require('ejs');
+const people1 = ['geddy', 'neil', 'alex'];
+   
+const html = ejs.render('<%= people.join(", "); %>', {people: people1});
 
 
-const gender = ['', 'Переглянути для чоловіків', 'Переглянути для жінок'];
-router.get('/', (req, res) =>  res.render('home'));
-router.get('/women-home',  (req, res) => {   
-    res.render('women-home', {gender:{women: gender[2]}, men: gender[0]});});
+router.get('/', (req, res) =>  res.render('home',{html}));
 
-router.get('/men-home', (req, res) => { 
-    res.render('women-home',{gender:{men: gender[1]},women: gender[0]});
-});
 
 module.exports = router;
 

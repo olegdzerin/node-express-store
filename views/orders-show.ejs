@@ -1,0 +1,9 @@
+<%- include('partials/header'); -%>
+
+
+<h3>У вашому кошику слідуючий товар:</h3>
+<%- include('partials/products/pro_catalog', {products: products}); -%>
+
+<a href="/products"  class="btn btn-primary return-to-catalog">Повернутися до каталогу</a>
+
+<%- include('partials/footer'); -%>
