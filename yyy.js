@@ -8,7 +8,7 @@
                 //     location.assign('/');
                 //     console.log(localStorage.getItem('cart_id'));
                 //     console.log(localStorage.getItem('user_id'));
-
+jkj;'ljl;jl;'
                 const form = document.querySelector('form');
                 const emailError = document.querySelector('.email.error');
                 const passwordError = document.querySelector('.password.error');
