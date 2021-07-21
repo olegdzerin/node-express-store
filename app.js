@@ -34,7 +34,7 @@ const {
 pool.connect()
   .then(() => {
     app.listen(3000),
-      console.log('Connection has been established successfully.....');
+      console.log('Connection has been established successfully');
 
   })
   .catch((error) => {
@@ -51,6 +51,6 @@ app.use('/customers', requireAuth, customersRouters);
 app.use(authRouters);
 app.get('*', (req, res) => {
   console.log(__dirname);
-   res.sendFile(path.join(__dirname, 'public/index.html'));
+   res.sendFile(path.join(__dirname, 'public/notFind.html'));
  
 })
