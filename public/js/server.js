@@ -1,4 +1,6 @@
-var url = (function () {
+// import  {ejs} from './ejs.min.js'
+
+export var url = (function () {
   return {
     urlProducts: 'http://localhost:3000/products',
     urlProducts_W_J: 'http://localhost:3000/products/women/jacket',
@@ -10,7 +12,7 @@ var url = (function () {
   }
 })()
 
-var navbarDomElem = (function () {
+export var navbarDomElem = (function () {
 
   const products_btn = document.querySelector('.products');
   const products_w_t_btn = document.querySelector('.products-women-trousers');
@@ -31,7 +33,7 @@ var navbarDomElem = (function () {
   }
 })();
 
-var bodyDomElement = (function () {
+export var bodyDomElement = (function () {
   return {
     content_products: document.querySelector('#content-products'),
   }
@@ -41,7 +43,7 @@ var bodyDomElement = (function () {
 
 
 
-var template = (function () {
+export var template = (function () {
   return {
     productTemplate: `
         <div class="col-3 ">
@@ -71,7 +73,7 @@ var template = (function () {
   }
 })();
 
-const eventHendlers = (function () {
+export const eventHendlers = (function () {
 
   const fetchFn = (arg) => {
     console.log(arg);
