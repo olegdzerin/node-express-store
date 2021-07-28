@@ -42,7 +42,7 @@ const {
            res.cookie('jwt', token);
           res.cookie('user_name',  result2.rows[0].name);
            res.cookie('user_id',  result2.rows[0].id);
-           res.redirect('/products');
+           res.redirect('/home');
         }else{
           res.render('login', {user_name: true,user: true,
             user_exist: message});
