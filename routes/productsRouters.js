@@ -54,7 +54,7 @@ router.get('/men/trousers', function (req, res) {
 router.post('/search', function(req,res){
   const user_id = req.cookies.user_id;
  const query = `SELECT * FROM products WHERE products.category = $1  OR gender = $2 ` ;
-      init(res, query, [req.body.data, req.body.data], user_id);
+      init(res, query, [req.body.inputCategory, req.body.inputCategory], user_id);
 })
 
 router.get('/:id', function(req, res) {
